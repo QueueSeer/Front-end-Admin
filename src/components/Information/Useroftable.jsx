@@ -11,6 +11,7 @@ const Useroftable = ({ onRowSelected }) => {
       birthDate: "10/07/2002",
       phone: "0912589426",
       isSelected: false,
+      isEditing: false,
     },
     {
       name: "Jane Doe",
@@ -19,13 +20,13 @@ const Useroftable = ({ onRowSelected }) => {
       birthDate: "12/12/1990",
       phone: "0912345678",
       isSelected: false,
+      isEditing: false,
     },
   ]);
 
   const [allSelected, setAllSelected] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState(null);
-  const [editRows, setEditRows] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   // Handle Select All
@@ -64,7 +65,6 @@ const Useroftable = ({ onRowSelected }) => {
   const closeModal = () => {
     setIsModalOpen(false);
     setModalAction(null);
-    setEditRows([]);
   };
 
   // ยืนยันการกระทำ
@@ -76,7 +76,7 @@ const Useroftable = ({ onRowSelected }) => {
           (user) => user.email === selectedUser.email
         );
         if (index !== -1) {
-          updatedUsers[index] = { ...selectedUser };
+          updatedUsers[index].isEditing = false; // ปิดสถานะแก้ไข
         }
       });
       setUsers(updatedUsers);
@@ -92,11 +92,13 @@ const Useroftable = ({ onRowSelected }) => {
 
   // แก้ไข Row
   const handleEditRows = () => {
-    const updatedEditRows = selectedUsers.map((user) => ({
-      ...user,
-      isEditing: true,
-    }));
-    setEditRows(updatedEditRows);
+    const updatedUsers = [...users].map((user) => {
+      if (user.isSelected) {
+        return { ...user, isEditing: true };
+      }
+      return user;
+    });
+    setUsers(updatedUsers);
     openModal("edit");
   };
 
@@ -107,125 +109,93 @@ const Useroftable = ({ onRowSelected }) => {
 
   return (
     <div className="mt-6 overflow-x-auto">
-      <table className="w-full table-auto border-collapse bg-white rounded-lg shadow-md">
-        <thead>
-          <tr className="bg-gray-100 text-[#8A92A6] font-sans">
-            <th className="p-4 text-left">
+  <table className="min-w-full table-auto border-collapse bg-white rounded-lg shadow-md">
+    <thead>
+      <tr className="bg-gray-100 text-[#8A92A6] font-sans">
+        <th className="p-4 text-left min-w-[40px]">
+        </th>
+        <th className="p-4 text-left min-w-[200px] cursor-pointer">
+          ชื่อผู้ใช้
+          <img
+            src={Images.FilterDown}
+            alt="Filter"
+            className="inline w-3 h-3 ml-2"
+          />
+        </th>
+        <th className="p-4 text-left min-w-[150px] cursor-pointer">
+          ผู้ใช้งาน
+          <img
+            src={Images.FilterDown}
+            alt="Filter"
+            className="inline w-3 h-3 ml-2"
+          />
+        </th>
+        <th className="p-4 text-left min-w-[150px] cursor-pointer">
+          วัน/เดือน/ปีเกิด
+          <img
+            src={Images.FilterDown}
+            alt="Filter"
+            className="inline w-3 h-3 ml-2"
+          />
+        </th>
+        <th className="p-4 text-left min-w-[150px] cursor-pointer">
+          เบอร์โทร
+          <img
+            src={Images.FilterDown}
+            alt="Filter"
+            className="inline w-3 h-3 ml-2"
+          />
+        </th>
+        <th className="p-4 text-left min-w-[100px] bg-gray-100">
+          ดูประวัติ
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {users.map((user, index) => (
+        <tr
+          key={index}
+          className="border-t hover:bg-gray-50 font-sans relative"
+        >
+          <td className="p-4 min-w-[40px]">
+           
+          </td>
+          <td className="p-4 flex items-center gap-3 min-w-[200px]">
+            <img
+              src={Images.member}
+              alt="User Avatar"
+              className="w-12 h-12 rounded-full"
+            />
+            {user.isEditing ? (
               <input
-                type="checkbox"
-                className="w-4 h-4"
-                checked={allSelected}
-                onChange={handleSelectAll}
+                type="text"
+                defaultValue={user.name}
+                className="p-1 border rounded w-full"
               />
-            </th>
-            <th className="p-4 text-left cursor-pointer">
-              ชื่อผู้ใช้
-              <img
-                src={Images.FilterDown}
-                alt="Filter"
-                className="inline w-3 h-3 ml-2"
-              />
-            </th>
-            <th className="p-4 text-left cursor-pointer">
-              ผู้ใช้งาน
-              <img
-                src={Images.FilterDown}
-                alt="Filter"
-                className="inline w-3 h-3 ml-2"
-              />
-            </th>
-            <th className="p-4 text-left cursor-pointer">
-              วัน/เดือน/ปีเกิด
-              <img
-                src={Images.FilterDown}
-                alt="Filter"
-                className="inline w-3 h-3 ml-2"
-              />
-            </th>
-            <th className="p-4 text-left cursor-pointer">
-              เบอร์โทร
-              <img
-                src={Images.FilterDown}
-                alt="Filter"
-                className="inline w-3 h-3 ml-2"
-              />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user, index) => (
-            <tr
-              key={index}
-              className="border-t hover:bg-gray-50 font-sans relative"
+            ) : (
+              <div>
+                <p className="font-medium">{user.name}</p>
+                <p className="text-gray-500 text-sm">{user.email}</p>
+              </div>
+            )}
+          </td>
+          <td className="p-4 min-w-[150px]">{user.role}</td>
+          <td className="p-4 min-w-[150px]">{user.birthDate}</td>
+          <td className="p-4 min-w-[150px]">{user.phone}</td>
+          <td className="p-4 min-w-[100px]">
+            <button
+              onClick={() => handleViewHistory(user)}
+              className="text-purple-500 hover:underline"
             >
-              <td className="p-4">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4"
-                  checked={user.isSelected}
-                  onChange={() => handleRowSelect(index)}
-                />
-              </td>
-              <td className="p-4 flex items-center gap-3">
-                <img
-                  src={Images.member}
-                  alt="User Avatar"
-                  className="w-12 h-12 rounded-full"
-                />
-                <div>
-                  <p className="font-medium">{user.name}</p>
-                  <p className="text-gray-500 text-sm">{user.email}</p>
-                </div>
-              </td>
-              <td className="p-4">{user.role}</td>
-              <td className="p-4">{user.birthDate}</td>
-              <td className="p-4">{user.phone}</td>
-              <td className="p-4">
-                <button
-                  onClick={() => handleViewHistory(user)}
-                  className="text-purple-500 hover:underline"
-                >
-                  ดูประวัติ
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              ดูประวัติ
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
-      {/* ปุ่มแก้ไขและลบ */}
-      <div className="fixed bottom-4 right-4 flex gap-4">
-        <button
-          onClick={handleEditRows}
-          className="flex items-center gap-2 px-4 py-2 bg-[#B6AFCA] text-black rounded-lg shadow hover:bg-[#a496be]"
-        >
-          แก้ไข
-        </button>
-        <button
-          onClick={() => openModal("delete")}
-          className="flex items-center gap-2 px-4 py-2 border border-[#B6AFCA] text-black rounded-lg shadow hover:bg-gray-100"
-        >
-          ลบ
-        </button>
-      </div>
-
-      {/* Confirmation Modal */}
-      <ConfirmationModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onConfirm={confirmModalAction}
-        title={
-          modalAction === "edit"
-            ? "ยืนยันการแก้ไขข้อมูล"
-            : "ยืนยันการลบข้อมูล"
-        }
-        message={
-          modalAction === "edit"
-            ? "คุณต้องการบันทึกการแก้ไขข้อมูลหรือไม่?"
-            : "คุณต้องการลบข้อมูลนี้หรือไม่?"
-        }
-      />
-    </div>
   );
 };
 
