@@ -9,10 +9,7 @@ const SearchBar = ({ selectedRows }) => {
           <img src={Images.Filterslines} alt="Filter" className="w-5 h-5" />
           <span className="ml-2">Filters</span>
         </button>
-        {/* แสดงจำนวนแถวที่เลือก */}
-        <span className="text-gray-500 text-sm">
-          {selectedRows} row{selectedRows === 1 ? "" : "s"} selected
-        </span>
+       
       </div>
       <div className="relative">
         <input

@@ -23,7 +23,7 @@ export default function UserInformation() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 bg-white shadow-md rounded-lg p-6">
+        <div className="flex-1 bg-white shadow-md rounded-lg p-6 border border-gray-200">
         <h1 className="text-xl font-bold text-[#65558F] dark:text-purple-400 mb-4 flex items-center">
         <img src={Images.UserInformation} alt="UserInformation Icon" className="w-6 h-6 mr-2" />
           ข้อมูลผู้ใช้งาน
