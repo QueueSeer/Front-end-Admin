@@ -1,12 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import Images from "../../assets";
+import ConfirmInspect from "../../components/popup/ConfirmInspect";
 
 const InspectionTable = ({ users, setUsers }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAction, setSelectedAction] = useState(null); // เก็บข้อมูลของผู้ใช้งานที่เลือก
+
   const handleStatusChange = (index, status) => {
     const updatedUsers = [...users];
     updatedUsers[index].status =
       status === "pass" ? "ผ่านการตรวจสอบ" : "ไม่ผ่านการตรวจสอบ";
     setUsers(updatedUsers);
+  };
+
+  const openModal = (index, action) => {
+    setSelectedAction({ index, action });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedAction(null);
+    setIsModalOpen(false);
+  };
+
+  const confirmAction = () => {
+    if (selectedAction) {
+      handleStatusChange(
+        selectedAction.index,
+        selectedAction.action === "pass" ? "pass" : "fail"
+      );
+    }
+    closeModal();
   };
 
   return (
@@ -47,14 +71,7 @@ const InspectionTable = ({ users, setUsers }) => {
                 className="inline w-3 h-3 ml-2"
               />
             </th>
-            <th className="p-4 text-left min-w-[150px]">
-              สถานะ
-              <img
-                src={Images.FilterDown}
-                alt="Filter"
-                className="inline w-3 h-3 ml-2"
-              />
-            </th>
+            <th className="p-4 text-left min-w-[150px]">สถานะ</th>
           </tr>
         </thead>
         <tbody>
@@ -116,13 +133,13 @@ const InspectionTable = ({ users, setUsers }) => {
                 ) : (
                   <div className="flex gap-2">
                     <button
-                      onClick={() => handleStatusChange(index, "pass")}
+                      onClick={() => openModal(index, "pass")}
                       className="px-3 py-1 text-white bg-green-500 rounded hover:bg-green-600"
                     >
                       ผ่าน
                     </button>
                     <button
-                      onClick={() => handleStatusChange(index, "fail")}
+                      onClick={() => openModal(index, "fail")}
                       className="px-3 py-1 text-white bg-gray-400 rounded hover:bg-gray-500"
                     >
                       ไม่ผ่าน
@@ -134,6 +151,14 @@ const InspectionTable = ({ users, setUsers }) => {
           ))}
         </tbody>
       </table>
+
+      {/* ใช้ ConfirmationModal Component */}
+      <ConfirmInspect
+        isOpen={isModalOpen}
+        action={selectedAction?.action}
+        onClose={closeModal}
+        onConfirm={confirmAction}
+      />
     </div>
   );
 };

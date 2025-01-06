@@ -10,6 +10,10 @@ import Filterslines from './icon/UserInformation/Filterslines.png';
 import search from './icon/UserInformation/search.png';
 import Trash from './icon/UserInformation/Trash.png';
 import member from './images/profile/member.png';
+import promtpay from './icon/money/promtpay.png';
+import TotalAmount from './icon/money/TotalAmount.png';
+import IncomingAmount from './icon/money/IncomingAmount.png';
+import AmountIssued from './icon/money/AmountIssued.png';
 
 
 
@@ -26,6 +30,10 @@ const Images = {
   search,
   Trash, 
   member , 
+  promtpay ,
+  TotalAmount,
+  IncomingAmount,
+  AmountIssued,
 
   
 
