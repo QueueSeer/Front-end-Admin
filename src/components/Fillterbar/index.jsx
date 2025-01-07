@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Fillterbar() {
   return (
-    <div className="navbar bg-base-100 shadow-md px-4">
+    <div className="navbar bg-white shadow-lg px-4">
       {/* โลโก้และชื่อโปรเจกต์ */}
       <div className="flex-1 flex items-center gap-2">
         <img src={Images.logo} alt="Logo" className="w-10 h-10 rounded-md mt-2" />

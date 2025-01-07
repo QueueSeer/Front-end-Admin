@@ -15,6 +15,11 @@ import TotalAmount from './icon/money/TotalAmount.png';
 import IncomingAmount from './icon/money/IncomingAmount.png';
 import AmountIssued from './icon/money/AmountIssued.png';
 
+import marble from './images/login/marble.png';
+import eyeIcon from './icon/login/eyeIcon.png';
+import keyIcon from './icon/login/keyIcon.png';
+import eyeopenIcon from './icon/login/eyeopenIcon.png';
+import letterIcon from './icon/login/letterIcon.png';
 
 
 const Images = {
@@ -34,6 +39,11 @@ const Images = {
   TotalAmount,
   IncomingAmount,
   AmountIssued,
+  marble,
+  eyeIcon,
+  keyIcon,
+  eyeopenIcon,
+  letterIcon,
 
   
 
