@@ -20,7 +20,6 @@ const ReviewManagement = () => {
       review: "แอปนี้ดีมาก ใช้งานง่ายสุดๆ!",
       comment: "เนื้อหาไม่เกี่ยวกับการทำนาย",
     },
-    // เพิ่มข้อมูลผู้ใช้งานตามต้องการ
   ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,7 +48,7 @@ const ReviewManagement = () => {
       {/* Main Layout */}
       <div className="flex px-12 pt-12 gap-14">
         {/* Sidebar */}
-        <div className="lg:w-72">
+        <div className="lg:w-72 flex-shrink-0">
           <Sidebar />
         </div>
 
@@ -65,7 +64,7 @@ const ReviewManagement = () => {
           </h1>
           <hr className="border-gray-300 dark:border-gray-700 mb-6" />
 
-          <div className="overflow-x-auto p-6">
+          <div className="overflow-x-auto">
             <table className="min-w-full table-auto border-collapse bg-white rounded-lg shadow-md">
               <thead className="bg-gray-100 text-[#8A92A6] font-sans">
                 <tr>
@@ -94,7 +93,7 @@ const ReviewManagement = () => {
                       className="inline w-3 h-3 ml-2"
                     />
                   </th>
-                 
+                  <th className="p-4 text-left min-w-[150px]"></th>
                 </tr>
               </thead>
               <tbody>
