@@ -5,7 +5,7 @@ const Confirmreview = ({ isOpen, onClose, onConfirm }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white w-[400px] p-6 rounded-lg shadow-lg">
+      <div className="bg-white w-[450px] p-6 rounded-lg shadow-lg">
         <h2 className="text-xl font-bold text-[#420F75] mb-4 text-center">
           คุณแน่ใจหรือไม่ว่าต้องการลบความคิดเห็นนี้?
         </h2>

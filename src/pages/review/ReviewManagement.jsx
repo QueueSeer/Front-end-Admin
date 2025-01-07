@@ -69,24 +69,47 @@ const ReviewManagement = () => {
             <table className="min-w-full table-auto border-collapse bg-white rounded-lg shadow-md">
               <thead className="bg-gray-100 text-[#8A92A6] font-sans">
                 <tr>
-                  <th className="p-4 text-left">ชื่อผู้ใช้</th>
-                  <th className="p-4 text-left">รีวิวจากผู้ใช้งาน</th>
-                  <th className="p-4 text-left">คำอธิบายของหมอดู</th>
+                  <th className="p-4 text-left min-w-[40px]"></th>
+                  <th className="p-4 text-left min-w-[200px] cursor-pointer">
+                    ชื่อผู้ใช้
+                    <img
+                      src={Images.FilterDown}
+                      alt="Filter"
+                      className="inline w-3 h-3 ml-2"
+                    />
+                  </th>
+                  <th className="p-4 text-left min-w-[400px] cursor-pointer">
+                    รีวิวจากผู้ใช้งาน
+                    <img
+                      src={Images.FilterDown}
+                      alt="Filter"
+                      className="inline w-3 h-3 ml-2"
+                    />
+                  </th>
+                  <th className="p-4 text-left min-w-[300px] cursor-pointer">
+                    คำอธิบายของหมอดู
+                    <img
+                      src={Images.FilterDown}
+                      alt="Filter"
+                      className="inline w-3 h-3 ml-2"
+                    />
+                  </th>
                  
                 </tr>
               </thead>
               <tbody>
-                {reviews.map((review) => (
+                {reviews.map((review, index) => (
                   <tr
-                    key={review.id}
-                    className="border-t hover:bg-gray-50 font-sans"
+                    key={index}
+                    className="border-t hover:bg-gray-50 font-sans relative"
                   >
-                    {/* ชื่อผู้ใช้ */}
-                    <td className="p-4 flex items-center gap-3">
+                    {/* คอลัมน์ชื่อผู้ใช้ */}
+                    <td className="p-4 min-w-[40px]"></td>
+                    <td className="p-4 flex items-center gap-3 min-w-[200px]">
                       <img
                         src={Images.member}
                         alt="User Avatar"
-                        className="w-10 h-10 rounded-full"
+                        className="w-12 h-12 rounded-full"
                       />
                       <div>
                         <p className="font-medium">{review.name}</p>
@@ -105,7 +128,7 @@ const ReviewManagement = () => {
                     </td>
 
                     {/* การกระทำ */}
-                    <td className="p-4 text-center">
+                    <td className="p-4 text-center min-w-[150px]">
                       <button
                         onClick={() => openModal(review.id)}
                         className="text-red-500 hover:text-red-700 flex items-center justify-center"
