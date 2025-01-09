@@ -1,6 +1,6 @@
 
 import Images from "../../assets";
-import Fillterbar from "../../components/Fillterbar";
+import Fillterbar from "../../components/fillterbar";
 import Sidebar from "../../components/Sidebar";
 import SearchBar from "../../components/Information/SearchBar";
 import Useroftable from "../../components/Information/Useroftable";
