@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Images from "../../assets";
 import SearchBar from "../../components/Information/SearchBar";
 import Sidebar from "../../components/Sidebar";
-import Fillterbar from "../../components/fillterbar";
+import Fillterbar from "../../components/Fillterbar";
 import InspectionTable from "../../components/inspec/InspectionTable";
 
 const InspecPage = () => {

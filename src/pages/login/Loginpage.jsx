@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import Images from "../../assets";
-import Fillterbar from "../../components/fillterbar";
+import Fillterbar from "../../components/Fillterbar";
 
 
 

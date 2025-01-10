@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Images from "../../assets";
 import Sidebar from "../../components/Sidebar";
-import Fillterbar from "../../components/fillterbar";
+import Fillterbar from "../../components/Fillterbar";
 import Confirmreview from "../../components/popup/Confirmreview";
 import ReviewTable from "../../components/Review/ReviewTable";
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Images from "../../assets";
-import Fillterbar from "../../components/fillterbar";
+import Fillterbar from "../../components/Fillterbar";
 import Sidebar from "../../components/Sidebar";
 import FilterTabs from "../../components/Tranferring/FilterTabs";
 import OverviewCard from "../../components/Tranferring/OverviewCard";
