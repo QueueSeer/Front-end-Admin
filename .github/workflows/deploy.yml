@@ -1,33 +1,25 @@
-name: Deploy static content to Pages
+name: Qseer application
 
 on:
-  # Runs on pushes targeting the default branch
   push:
+<<<<<<< Updated upstream:.github/workflows/deploy.yml
     branches:
       - dev
 
   # Allows you to run this workflow manually from the Actions tab
+=======
+    branches: [ "Dev" ]
+>>>>>>> Stashed changes:Front-end-Admin/.github/workflows/deploy.yml
   workflow_dispatch:
 
-# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: 'pages'
-  cancel-in-progress: true
-
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+  build:
+    runs-on: self-hosted
+    environment: Production
     steps:
+<<<<<<< Updated upstream:.github/workflows/deploy.yml
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set up Node
@@ -48,3 +40,15 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+=======
+    - name: Fetch latest commit
+      uses: actions/checkout@v4
+    - name: Build app
+      run: docker compose up --force-recreate --build --detach
+    - name: Check if app is running
+      id: checkAlive
+      run: sleep 5 && docker compose ps --services --status=exited | grep -v '\b\b'
+    - name: Show failed logs
+      if: failure() && steps.checkAlive.outcome == 'failure'
+      run: docker compose logs
+>>>>>>> Stashed changes:Front-end-Admin/.github/workflows/deploy.yml
