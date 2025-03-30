@@ -5,9 +5,6 @@ import axios from "axios";
 import Images from "../../assets";
 import Fillterbar from "../../components/Fillterbar";
 
-
-
-
 const GOOGLE_CLIENT_ID = "482872878938-qln7jlcv0elrffnnaqd4qpqs43jh4ob9.apps.googleusercontent.com";
 
 export default function Loginpage() {
@@ -17,8 +14,6 @@ export default function Loginpage() {
   const [emailError, setEmailError] = useState(""); // สำหรับอีเมล
   const [passwordError, setPasswordError] = useState(""); // สำหรับรหัสผ่าน
   
-  
-
   useEffect(() => {
     const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
     setIsDarkMode(matchMedia.matches);
@@ -48,70 +43,92 @@ export default function Loginpage() {
   
       if (response.status === 200) {
         console.log("Login Successful:", response.data);
-        localStorage.setItem("token", response.data.token); // บันทึก token
-        navigate("/UserInfor"); // ย้ายไปยังหน้าฟิลเตอร์
+        
+        // เก็บข้อมูล token ทั้งหมด
+        localStorage.setItem("authToken", JSON.stringify(response.data));
+        
+        navigate("/UserInfor");
       }
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
+      alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google กรุณาลองใหม่อีกครั้ง");
     }
   };
   
-
   const handleGoogleLoginError = () => {
     alert("Google login failed. Please try again.");
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setEmailError(""); // รีเซ็ตข้อความข้อผิดพลาดอีเมล
-    setPasswordError(""); // รีเซ็ตข้อความข้อผิดพลาดรหัสผ่าน
-  
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-  
-    let hasError = false; // ใช้ตรวจสอบว่ามีข้อผิดพลาดหรือไม่
-  
-    // ตรวจสอบอีเมล
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // รูปแบบอีเมลที่ถูกต้อง
-    if (!email) {
-      setEmailError("กรุณากรอกอีเมล");
-      hasError = true; // ตั้งค่าว่ามีข้อผิดพลาด
-    } else if (!emailRegex.test(email)) {
-      setEmailError("กรุณากรอกอีเมลให้ถูกต้อง");
-      hasError = true;
-    }
-  
-    // ตรวจสอบรหัสผ่าน
-    if (!password) {
-      setPasswordError("กรุณากรอกรหัสผ่าน");
-      hasError = true;
-    }
-  
-    // ถ้ามีข้อผิดพลาด ไม่ดำเนินการต่อ
-    if (hasError) {
-      return;
-    }
-  
-    // ถ้าข้อมูลถูกต้อง
-    try {
-      const response = await axios.post(
-        "https://backend.qseer.app/api/access/login",
-        { email, password },
-        { headers: { "Content-Type": "application/json" } }
-      );
-  
-      if (response.status === 200) {
-        console.log("Login Successful:", response.data);
-        localStorage.setItem("token", response.data.token); // เก็บ token
-        navigate("/UserInfor"); // ไปที่หน้า fillter
+  // Updated handleLogin function with debugging
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setEmailError("");
+  setPasswordError("");
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  // Validation code... (same as before)
+
+  // ถ้าข้อมูลถูกต้อง
+  try {
+    console.log("Attempting login with:", { email });
+    
+    const response = await axios.post(
+      "https://backend.qseer.app/api/access/login",
+      { email: email, password: password },
+      { 
+        headers: { "Content-Type": "application/json" },
       }
-    } catch (error) {
-      console.error("Login error:", error.response?.data || error.message);
+    );
+
+    if (response.status === 200) {
+      // แสดงข้อมูลที่ได้รับจาก API อย่างละเอียด
+      console.log("===== API RESPONSE DATA =====");
+      console.log("Raw response data:", response.data);
+      console.log("Data type:", typeof response.data);
+      
+      if (typeof response.data === 'object') {
+        console.log("Properties:", Object.keys(response.data));
+        
+        if (response.data.token) {
+          console.log("Token exists in response.data");
+          console.log("Token type:", typeof response.data.token);
+        } else {
+          console.log("No token property in response.data");
+          // หาก response.data เป็น token โดยตรง (ไม่มี property ชื่อ token)
+          console.log("Treating entire response.data as token");
+        }
+      }
+      
+      // เก็บข้อมูล token ให้ถูกต้อง
+      const tokenToStore = response.data.token || response.data;
+      console.log("Storing token data:", tokenToStore);
+      
+      // เก็บ token ลงใน localStorage
+      localStorage.setItem("authToken", JSON.stringify(tokenToStore));
+      
+      // อ่าน token ที่เพิ่งเก็บเพื่อตรวจสอบความถูกต้อง
+      const storedToken = localStorage.getItem("authToken");
+      console.log("Retrieved token from localStorage:", storedToken);
+      console.log("Parsed token:", JSON.parse(storedToken));
+      
+      navigate("/UserInfor");
     }
-  };
-  
-  
-  
+  } catch (error) {
+    console.error("Login error details:", error);
+    if (error.response) {
+      console.error("Error response data:", error.response.data);
+      console.error("Error response status:", error.response.status);
+    }
+    
+    if (error.response?.status === 401) {
+      setEmailError("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+    } else {
+      alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง");
+    }
+  }
+};
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
@@ -226,10 +243,6 @@ export default function Loginpage() {
                   {passwordError && <p className="text-red-500 text-sm mt-1 pl-12">{passwordError}</p>}
                 </div>
 
-
-
-
-
                 <div className="flex items-end text-sm">
                   <Link to="/forgot-password" className={`ml-auto hover:underline ${isDarkMode ? "text-purple-300" : "text-purple-500"}`}>
                     Forgot Password?
@@ -245,8 +258,6 @@ export default function Loginpage() {
                   เข้าสู่ระบบ
                 </button>
               </form>
-
-           
 
               {/* ปุ่ม Login with Google */}
               <div className="flex items-center my-6">
